@@ -6,6 +6,10 @@ v2/A20
 ## Image
 
 	https://www.armbian.com/cubieboard-2/
+
+this image worked in July 2020:
+
+	https://dl.armbian.com/cubieboard2/Focal_current
 	
 ## Install
 
