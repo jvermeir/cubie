@@ -20,6 +20,10 @@ iptables -A INPUT -p icmp -j ACCEPT
 iptables -A OUTPUT -p icmp -j ACCEPT
 
 
+iptables -A OUTPUT -o eth0 -p tcp -j ACCEPT
+iptables -I INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+
 # insert everything you want to allow -->
 
 # ALLOW incoming SSH from eth0
