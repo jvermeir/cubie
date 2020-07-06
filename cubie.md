@@ -1,7 +1,7 @@
 # Cubie board
 ## Hardware Version
-v2/A20
 
+v2/A20
 
 ## Image
 
@@ -9,16 +9,106 @@ v2/A20
 
 this image worked in July 2020:
 
+    # Armbian_20.05.4_Cubieboard2_focal_current_5.4.45.img
 	https://dl.armbian.com/cubieboard2/Focal_current
+	
+convert img file for use in virtual box (TODO: vm doesn't start yet): 
+
+    http://www.kombitz.com/2009/10/06/how-to-mount-an-img-file-on-virtualbox/
+    
+    VBoxManage convertfromraw -format VDI Armbian_20.05.4_Cubieboard2_focal_current_5.4.45.img Armbian_20.05.4_Cubieboard2_focal_current_5.4.45.vdi	
 	
 ## Install
 
-Use Etcher
+### Copy image to sd card with Etcher
 
 	https://www.etcher.io/
 	
 Connect display, keyboard, network cable
 Set root password, secondary user is created.
+
+### ssh
+
+    ssh-keygen (to generate folders with correct permissions)
+    scp <user@host>:/Users/<user>/.ssh/cubie* .
+    
+    vi ~/.ssh/authorized_keys
+    # add id_rsa.pub from mac 
+    
+### git 
+   
+use cubie_rsa key for git
+
+ ```bash
+ # ~/.ssh/config
+ Host cubie
+     Hostname github.com
+     User git
+     IdentityFile ~/.ssh/cubie_rsa
+ ```
+
+Set identity
+
+     git config --global user.email "you@example.com"
+     git config --global user.name "Your Name"
+     
+### Source
+
+clone repo using (note: user=cubie):
+
+    cd
+    mkdir dev
+    cd dev
+    git clone git@cubie:jvermeir/cubie.git
+      
+### Webserver
+
+    cd
+    cd dev/cubie/web
+    python3 webserver.py    
+
+### iptables 
+
+    source ~/dev/cubie/install/iptables_install.sh
+    # TODO: this iptables config makes outgoing connections over http fail
+       
+### Fixed ip address
+
+(TODO: after this config ssh to cubie fails)
+
+use `nmcli`
+
+https://www.tecmint.com/nmcli-configure-network-connection/
+
+    nmcli con edit 
+    
+    # 802-3-ethernet
+    # print ipv4 
+      
+    
+----
+
+### Meuk below
+
+### Settings
+
+color settings for vi:
+
+Copy `install/.vimrc` to home folder
+
+### mac address problems
+
+	https://github.com/debian-pi/raspbian-ua-netinst/issues/471
+	
+	edit /etc/network/interfaces.d/wlan0 file and put there:
+
+	auto wlan0
+	iface wlan0 inet dhcp
+  		pre-up /sbin/ip link set dev wlan0 address xx:xx:xx:xx:xx:xx
+      
+
+
+## 1st try
 
 Set up network for static IP
 
@@ -62,34 +152,6 @@ Add this to ~/.bashrc in root home folder:
     ifconfig eth0 192.168.2.250
     	
 
-### Settings
-
-color settings for vi:
-
-Copy `install/.vimrc` to home folder
-      
-### mac address problems
-
-	https://github.com/debian-pi/raspbian-ua-netinst/issues/471
-	
-	edit /etc/network/interfaces.d/wlan0 file and put there:
-
-	auto wlan0
-	iface wlan0 inet dhcp
-  		pre-up /sbin/ip link set dev wlan0 address xx:xx:xx:xx:xx:xx
-      
-
-## Connect
-
-	ssh jan@192.168.2.250
-	
-## Webserver
-
-
-
-----
-
-### Meuk below
 
 
 doesn't work yet, see:
