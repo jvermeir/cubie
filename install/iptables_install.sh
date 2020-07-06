@@ -33,3 +33,9 @@ iptables -A OUTPUT -o eth0 -p tcp --sport 8080 -m state --state ESTABLISHED -j A
 # DROP rest
 iptables -A INPUT -j REJECT
 iptables -A OUTPUT -j REJECT
+
+## Now we've got an iptables config, persist changes
+
+iptables -L > /etc/iptables.rules
+cp 01firewall /etc/NetworkManager/dispatcher.d/01firewall
+chmod +x /etc/NetworkManager/dispatcher.d/01firewall

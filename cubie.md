@@ -69,26 +69,56 @@ clone repo using (note: user=cubie):
 
 ### iptables 
 
-    source ~/dev/cubie/install/iptables_install.sh
-    # TODO: this iptables config makes outgoing connections over http fail
-       
-### Fixed ip address
+see https://help.ubuntu.com/community/IptablesHowTo
 
-(TODO: after this config ssh to cubie fails)
-
-use `nmcli`
-
-https://www.tecmint.com/nmcli-configure-network-connection/
-
-    nmcli con edit 
+    cd ~/dev/cubie/install
+    source iptables_install.sh
     
-    # 802-3-ethernet
-    # print ipv4 
-      
+### Ip address
+
+add to `/boot/armbianEnv.txt`
     
+    ethaddr=00:e0:4c:9b:33:4f
+    eth0addr=00:e0:4c:9b:33:4f
+    eth1addr=00:e0:4c:9b:33:4f
+        
+### OSX network 
+
+show routing table:
+
+    netstat -rn
+    
+----
+----
 ----
 
 ### Meuk below
+
+use `nmcli`
+
+    https://www.golinuxcloud.com/nmcli-command-examples-cheatsheet-centos-rhel/
+    https://www.tecmint.com/nmcli-configure-network-connection/
+
+start nmcli tool for connection named `internet`
+    
+    nmcli con edit ethernet
+
+    # make sure router always gives out the same address: ???
+    set 802-3-ethernet.mac-address 06:4f:fb:48:bf:d0
+    set 802-3-ethernet.cloned-mac-address 06:4f:fb:48:bf:d0
+
+    save
+    quit 
+        
+
+obsolete network settings:
+    
+    set ipv4.addresses 192.168.2.250
+    set ipv4.gateway 192.168.2.254
+    set ipv4.dns 8.8.8.8
+    
+somehow connecting with ssh stops working if we've got a static ip address
+
 
 ### Settings
 
