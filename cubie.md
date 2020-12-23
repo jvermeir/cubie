@@ -54,7 +54,7 @@ Set identity
      
 ### Source
 
-clone repo using (note: user=cubie):
+clone repo (note: user=cubie):
 
     cd
     mkdir dev
@@ -81,6 +81,8 @@ add to `/boot/armbianEnv.txt`
     ethaddr=00:e0:4c:9b:33:4f
     eth0addr=00:e0:4c:9b:33:4f
     eth1addr=00:e0:4c:9b:33:4f
+    
+assign ip address to this mac using the dhcp tool     
         
 ### OSX network 
 
@@ -88,6 +90,43 @@ show routing table:
 
     netstat -rn
     
+### two factor authentication
+
+https://www.techrepublic.com/article/how-to-setup-two-factor-authentication-in-linux/
+
+     sudo apt-get install libpam-google-authenticator
+    
+     vi /etc/pam.d/common-auth
+     # add
+     # auth required pam_google_authenticator.so nullok
+     
+     google-authenticator
+     
+     vi /etc/pam.d/sshd
+     # add 
+     # auth required pam_google_authenticator.so nullok
+     
+     vi /etc/ssh/sshd_config
+     # add or change
+     # ChallengeResponseAuthentication yes
+     
+Now you need to type the same code twice. TODO: find out why?     
+     
+TODO: 
+    PermitRootLogin yes -> change to no in /etc/ssh/sshd_config    
+    hide ssh server type information
+    hide os type information
+    
+    curl -v cubieboard2:8080/index.htm
+    # reports:
+    
+    *   Trying 192.168.2.77...
+    < Server: SimpleHTTP/0.6 Python/3.8.2
+     
+## Security scan
+
+    https://www.fosslinux.com/7320/how-to-install-and-configure-openvas-9-on-ubuntu.htm
+                 
 ----
 ----
 ----
